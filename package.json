@@ -1,0 +1,12 @@
+{
+  "name": "melo-vent-server",
+  "version": "1.0.0",
+  "description": "Dedicated vent room server for Melo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

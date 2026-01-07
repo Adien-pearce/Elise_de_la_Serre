@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melo App | Mental Wellness</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.ico">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0d1117">
+    <meta name="description" content="Your therapist-backed mental wellness companion">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body class="bg-[#0d1117] text-gray-100 min-h-screen">
+    <!-- Header (Simple/Minimal) -->
+    <header id="app-header" class="sticky top-0 z-50 bg-[#0d1117]/95 backdrop-blur-md p-4 border-b border-gray-800 shadow-lg">
+        <div class="flex justify-between items-center max-w-6xl mx-auto">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="p-2 text-gray-400 hover:text-white transition" title="Go Home">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                </a>
+                <button id="back-btn" onclick="goBack()" class="p-2 text-gray-400 hover:text-white transition hidden" title="Go Back">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-2xl font-black text-white">Melo <span class="text-purple-400">🧠</span></h1>
+                </div>
+                <div id="user-id-display" class="hidden md:flex items-center px-3 py-1 bg-gray-800/50 rounded-full border border-gray-700">
+                    <span class="text-[10px] font-bold text-gray-500 mr-2 uppercase tracking-tighter">ID:</span>
+                    <span class="text-xs font-mono text-gray-400" id="user-id-text"></span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <button onclick="showAdminPanel()" class="p-2 text-gray-400 hover:text-purple-400 transition" title="Security">
+                    <i data-lucide="shield" class="w-6 h-6"></i>
+                </button>
+                <button onclick="changeView('settings')" class="p-2 text-gray-400 hover:text-purple-400 transition" title="Settings">
+                    <i data-lucide="settings" class="w-6 h-6"></i>
+                </button>
+                <button onclick="LoginPage.logout()" class="p-2 text-gray-400 hover:text-red-400 transition" title="Logout">
+                    <i data-lucide="log-out" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div id="app-content" class="main-content px-4">
+        <!-- Content will be rendered here by JavaScript -->
+        <div class="h-full flex items-center justify-center">
+            <div class="text-center">
+                <div class="flex justify-center space-x-2 mb-4">
+                    <div class="loading-dot h-3 w-3 bg-purple-500 rounded-full"></div>
+                    <div class="loading-dot h-3 w-3 bg-purple-500 rounded-full"></div>
+                    <div class="loading-dot h-3 w-3 bg-purple-500 rounded-full"></div>
+                </div>
+                <p class="text-purple-400 font-medium animate-pulse">Initializing Melo...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav Reveal Trigger Area -->
+    <div class="nav-trigger"></div>
+
+    <!-- Bottom Navigation Bar (Mobile-First) -->
+    <nav id="main-nav" class="fixed bottom-0 left-0 right-0 h-20 bg-[#161b22]/95 backdrop-blur-md border-t border-gray-700 z-20 shadow-[0_-5px_20px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-in-out">
+        <div class="flex justify-around items-center h-full max-w-lg mx-auto p-2">
+            <!-- Auri Chat -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-purple-400 active" onclick="changeView('auri')">
+                <i data-lucide="sparkles" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Auri</span>
+            </button>
+            <!-- Daily Journal -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-gray-400" onclick="changeView('journal')">
+                <i data-lucide="book-open-text" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Journal</span>
+            </button>
+            <!-- Insights -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-gray-400" onclick="changeView('insights')">
+                <i data-lucide="line-chart" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Insights</span>
+            </button>
+            <!-- Micro-Therapy Toolkit -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-gray-400" onclick="changeView('toolkit')">
+                <i data-lucide="toolbox" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Toolkit</span>
+            </button>
+            <!-- Emergency Aid -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-gray-400" onclick="changeView('aid')">
+                <i data-lucide="zap" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Aid</span>
+            </button>
+            <!-- Vent Room -->
+            <button class="nav-item flex flex-col items-center space-y-1 text-gray-400" onclick="changeView('vent')">
+                <i data-lucide="message-square-text" class="nav-icon w-7 h-7"></i>
+                <span class="text-xs font-medium">Vent</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- JavaScript Files (Optimized Loading Order) -->
+    <script src="config.js" defer></script>
+    <script src="api.js" defer></script>
+    <script src="utils-export.js" defer></script>
+    <script src="admin-auth.js" defer></script>
+    <script src="messaging-service.js" defer></script>
+    <script src="push-notifications.js" defer></script>
+    <script src="email-service.js" defer></script>
+    <script src="JavaScript Modules/gmail-notifications.js" defer></script>
+    <script src="firebase-utils.js" defer></script>
+    <script src="secure-storage.js" defer></script>
+    <script src="voice-input.js" defer></script>
+    <script src="login-page.js" defer></script>
+    <script src="graph-export.js" defer></script>
+    <script src="vent-socket-client.js" defer></script>
+    <script src="app.js" defer></script>
+    <script type="module" src="firebase-config.js" onerror="window.firebaseConfigError=true"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
